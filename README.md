@@ -7,7 +7,7 @@
 
 ## 💡 Why This Project?
 
-As a developer working with legacy systems and database migrations, I often encounter database schema diagrams in documentation, whiteboards, or design documents that need to be converted to structured formats. Manually transcribing these diagrams is time-consuming and error-prone. 
+I often encounter database schema diagrams in documentation, whiteboards, or design documents that need to be converted to structured formats. Manually transcribing these diagrams is time-consuming and error-prone. 
 
 This project explores **fine-tuning a vision-language model** to automatically extract structured JSON schema from ER diagram images, potentially saving hours of manual work in database documentation and migration projects.
 
@@ -32,10 +32,9 @@ I chose **Qwen2.5-VL-3B-Instruct** because:
 - **Method**: LoRA (Low-Rank Adaptation) for parameter-efficient fine-tuning
 - **Target Modules**: q_proj, v_proj, k_proj, o_proj (attention layers)
 - **LoRA Configuration**: rank=16, alpha=32 for optimal performance vs. efficiency
-- **Training Framework**: PyTorch Lightning for robust training pipeline
 
 ### Dataset Creation
-I created a diverse dataset of 2000+ schema diagrams covering:
+I created a diverse dataset of 400+ schema diagrams covering:
 - **E-commerce**: Products, orders, customers, payments
 - **Healthcare**: Patients, appointments, medical records  
 - **Education**: Students, courses, grades, enrollment
@@ -55,76 +54,12 @@ The fine-tuned model shows significant improvements over the base model:
 | **Overall Schema Score** | 62.1% | 87.0% | **+24.9%** |
 | **JSON Format Compliance** | 78.1% | 96.2% | **+18.1%** |
 
-### Training Metrics (Comet ML)
-- **Training Loss**: Converged from 2.8 to 0.6 over 8 epochs
-- **Validation Loss**: Stable at 0.8 with no overfitting
-- **Learning Rate**: 1e-4 with cosine scheduling
-- **Training Time**: ~6 hours on RTX 4090
-- **Memory Usage**: Peak 14GB VRAM with gradient accumulation
+
 
 ## 📓 Notebook Walkthrough
 
-The core of this project is in the `finetuning (2).ipynb` notebook. Here's what it covers:
+The core of this project is in the `finetuning.ipynb` notebook.
 
-### 1. **Environment Setup & Dependencies**
-```python
-# Key libraries used
-!pip install transformers==4.49.0
-!pip install torch torchvision 
-!pip install qwen_vl_utils
-!pip install lightning accelerate
-!pip install comet_ml  # For experiment tracking
-```
-
-### 2. **Data Loading & Preprocessing**
-- Load the custom dataset of 2000+ schema diagrams
-- Implement custom preprocessing for consistent image formatting
-- Create train/validation splits (80/20)
-- Set up data loaders with proper batching
-
-### 3. **Model Configuration**
-```python
-# LoRA configuration for efficient fine-tuning
-peft_config = LoraConfig(
-    r=16,                    # Low rank for efficiency
-    lora_alpha=32,           # Scaling parameter
-    target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
-    lora_dropout=0.1,
-    bias="none",
-    task_type="FEATURE_EXTRACTION"
-)
-```
-
-### 4. **Training Pipeline**
-- Custom Lightning module for Qwen2.5-VL fine-tuning
-- Mixed precision training (bfloat16) for memory efficiency
-- Gradient accumulation for effective larger batch sizes
-- Learning rate scheduling with warmup
-
-### 5. **Evaluation & Metrics**
-- Custom evaluation metrics for schema accuracy
-- Table detection precision/recall
-- Relationship extraction accuracy
-- JSON format validation
-
-### 6. **Model Saving & Upload**
-- Save LoRA adapter weights
-- Upload to Hugging Face Hub as `zodiac2525/Qwen2.5-VL-Diagrams2SQL`
-- Model versioning and documentation
-
-## � Training Insights & Lessons Learned
-
-### What Worked Well
-- **LoRA Fine-tuning**: Much more efficient than full fine-tuning, reduced training time by 70%
-- **Mixed Precision**: Essential for fitting larger effective batch sizes in memory
-- **Data Diversity**: Training on multiple domains significantly improved generalization
-- **Structured Prompting**: Using consistent "Extract data in JSON format" prompt improved output reliability
-
-### Challenges Faced
-- **Memory Constraints**: Had to optimize pixel limits and use gradient accumulation
-- **JSON Consistency**: Base model occasionally produced malformed JSON - solved with better prompting
-- **Relationship Detection**: Most challenging aspect, required careful annotation of training data
-- **Overfitting**: Early epochs showed overfitting, resolved with proper validation monitoring
 
 ### Comet ML Experiment Tracking
 The training process was thoroughly monitored using Comet ML, tracking:
@@ -132,9 +67,12 @@ The training process was thoroughly monitored using Comet ML, tracking:
 - Learning rate schedules  
 - Memory usage patterns
 - Evaluation metrics per epoch
-- Sample predictions for qualitative analysis
 
-*[Include screenshots/links to your Comet ML experiments if you'd like to share them]*
+#### Training Loss Progression
+![Training Loss vs Steps](public/train_loss%20VS%20step.svg)
+
+#### Validation Error Metrics
+![Validation Error](public/val_error.svg)
 
 ## 🚀 Quick Usage
 
