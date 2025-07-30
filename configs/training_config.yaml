@@ -1,0 +1,110 @@
+# Training Configuration for DB Diagram to SQL Schema Converter
+
+# Model Configuration
+model:
+  base_model: "Qwen/Qwen2.5-VL-3B-Instruct"
+  model_id: "zodiac2525/Qwen2.5-VL-Diagrams2SQL"
+  
+  # LoRA Configuration
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.1
+  target_modules:
+    - "q_proj"
+    - "v_proj"
+    - "k_proj"
+    - "o_proj"
+  
+  # Model Settings
+  torch_dtype: "bfloat16"
+
+# Training Configuration
+training:
+  learning_rate: 1.0e-4
+  batch_size: 4
+  max_epochs: 8
+  gradient_accumulation_steps: 8
+  gradient_clip_val: 1.0
+  warmup_steps: 50
+  check_val_every_n_epoch: 2
+  early_stopping_patience: 4
+  
+  # Optimization
+  optimizer: "AdamW"
+  weight_decay: 0.01
+  lr_scheduler: "cosine"
+  
+  # Monitoring
+  log_every_n_steps: 5
+  save_every_n_epochs: 1
+
+# Data Configuration
+data:
+  # Image Processing
+  max_pixels: 802816  # 1024 * 28 * 28
+  min_pixels: 200704  # 256 * 28 * 28
+  
+  # Dataset Splits
+  train_split: 0.8
+  val_split: 0.2
+  
+  # DataLoader Settings
+  num_workers: 4
+  pin_memory: true
+  persistent_workers: true
+
+# Inference Configuration
+inference:
+  max_new_tokens: 1024
+  do_sample: false
+  temperature: 1.0
+  batch_size: 1
+  
+  # Generation Strategy
+  generation_strategy: "greedy"  # or "beam_search", "sampling"
+  num_beams: 1  # for beam search
+  top_p: 0.9  # for nucleus sampling
+  top_k: 50  # for top-k sampling
+
+# Logging and Monitoring
+logging:
+  level: "INFO"
+  
+  # Experiment Tracking
+  use_comet: true
+  use_wandb: false
+  use_tensorboard: true
+  
+  # Comet Configuration
+  comet:
+    project_name: "diagrams2sql"
+    workspace: "dvnguyen02"
+    
+  # WandB Configuration
+  wandb:
+    project: "dbdiagram2sql"
+    entity: "dvnguyen02"
+
+# Hardware Configuration
+hardware:
+  use_gpu: true
+  mixed_precision: true
+  precision: "bf16-mixed"
+  
+  # Distributed Training
+  strategy: "auto"  # or "ddp", "deepspeed"
+  num_nodes: 1
+  devices: 1
+
+# Paths
+paths:
+  data_dir: "./real_diagrams"
+  output_dir: "./outputs"
+  checkpoint_dir: "./checkpoints"
+  log_dir: "./logs"
+  
+# Validation and Testing
+validation:
+  metric: "overall_score"  # metric to monitor for early stopping
+  mode: "max"  # "max" or "min"
+  limit_val_batches: 10  # limit validation batches for faster validation

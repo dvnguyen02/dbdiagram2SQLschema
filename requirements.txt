@@ -1,0 +1,42 @@
+# Core dependencies
+torch>=2.0.0
+transformers>=4.49.0
+accelerate>=0.20.0
+peft>=0.7.0
+bitsandbytes>=0.41.0
+datasets>=2.14.0
+qwen-vl-utils[decord]==0.0.8
+
+# Computer Vision
+Pillow>=9.0.0
+opencv-python>=4.7.0
+
+# Data Processing
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Utilities
+tqdm>=4.65.0
+PyYAML>=6.0
+click>=8.1.0
+
+# Logging and Monitoring
+comet-ml>=3.31.0
+tensorboard>=2.13.0
+wandb>=0.15.0
+
+# Development
+jupyter>=1.0.0
+notebook>=6.5.0
+
+# API
+fastapi>=0.100.0
+uvicorn>=0.22.0
+python-multipart>=0.0.6
+
+# Testing (for requirements-dev.txt)
+# pytest>=7.4.0
+# pytest-cov>=4.1.0
+# black>=23.7.0
+# flake8>=6.0.0
+# mypy>=1.5.0

@@ -1,0 +1,101 @@
+# Inference Configuration for DB Diagram to SQL Schema Converter
+
+# Model Configuration
+model:
+  model_id: "zodiac2525/Qwen2.5-VL-Diagrams2SQL"
+  torch_dtype: "bfloat16"
+  device: "auto"  # "cuda", "cpu", or "auto"
+
+# Image Processing
+image:
+  max_pixels: 802816  # 1024 * 28 * 28
+  min_pixels: 200704  # 256 * 28 * 28
+  
+  # Supported formats
+  supported_formats:
+    - ".png"
+    - ".jpg"
+    - ".jpeg"
+    - ".bmp"
+    - ".tiff"
+    - ".webp"
+
+# Generation Configuration
+generation:
+  max_new_tokens: 1024
+  do_sample: false
+  temperature: 1.0
+  
+  # Advanced Generation Settings
+  top_p: 0.9
+  top_k: 50
+  repetition_penalty: 1.0
+  length_penalty: 1.0
+  
+  # Stopping Criteria
+  early_stopping: true
+  num_beams: 1
+  
+  # Output Control
+  return_raw_output: false
+  include_metadata: false
+
+# Batch Processing
+batch:
+  batch_size: 4
+  max_batch_size: 8
+  
+  # Memory Management
+  clear_cache_between_batches: true
+  garbage_collect_frequency: 10
+
+# Output Configuration
+output:
+  format: "json"  # "json", "yaml", or "both"
+  indent: 2
+  ensure_ascii: false
+  
+  # Validation
+  validate_json: true
+  pretty_print: true
+  
+  # File Naming
+  naming_pattern: "{input_name}_schema.json"
+  include_timestamp: false
+
+# Error Handling
+error_handling:
+  continue_on_error: true
+  max_retries: 3
+  retry_delay: 1.0  # seconds
+  
+  # Fallback Behavior
+  fallback_to_empty_schema: true
+  log_errors: true
+
+# Performance
+performance:
+  # Memory Optimization
+  use_cpu_offload: false
+  low_memory_mode: false
+  
+  # Caching
+  enable_model_cache: true
+  cache_size: 100  # number of processed images to cache
+  
+  # Monitoring
+  profile_inference: false
+  log_timing: true
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  
+  # File Logging
+  log_to_file: false
+  log_file: "inference.log"
+  
+  # Progress Reporting
+  show_progress: true
+  progress_update_frequency: 10  # every N images
