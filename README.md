@@ -190,41 +190,13 @@ if json_start != -1:
     print(json.dumps(schema_json, indent=2))
 ```
 
-### Example Output
+## 🤗 Model on Hugging Face
 
-Input: *ER diagram with users, orders, products tables*
+The fine-tuned model is available on Hugging Face Hub:
 
-```json
-{
-  "tables": [
-    {
-      "name": "users",
-      "columns": [
-        {"name": "id", "type": "INTEGER", "primary_key": true},
-        {"name": "email", "type": "VARCHAR(255)", "unique": true},
-        {"name": "created_at", "type": "TIMESTAMP"}
-      ]
-    },
-    {
-      "name": "orders",
-      "columns": [
-        {"name": "id", "type": "INTEGER", "primary_key": true},
-        {"name": "user_id", "type": "INTEGER"},
-        {"name": "total", "type": "DECIMAL(10,2)"}
-      ]
-    }
-  ],
-  "relationships": [
-    {
-      "from_table": "orders",
-      "from_column": "user_id",
-      "to_table": "users", 
-      "to_column": "id",
-      "type": "many_to_one"
-    }
-  ]
-}
-```
+**[zodiac2525/Qwen2.5-VL-Diagrams2SQL](https://huggingface.co/zodiac2525/Qwen2.5-VL-Diagrams2SQL)**
+
+You can directly use it with the transformers library or try it in the web interface for quick testing.
 
 ## � Repository Structure
 
@@ -246,53 +218,3 @@ dbdiagram2sql/
 ├── requirements.txt                 # Python dependencies
 └── README.md                       # This file
 ```
-
-## 🔍 Key Technologies Used
-
-- **🤗 Transformers 4.49.0**: For model loading and inference
-- **⚡ PyTorch Lightning**: Training framework and experiment management  
-- **🎯 PEFT (LoRA)**: Parameter-efficient fine-tuning
-- **🖼️ qwen_vl_utils**: Specialized utilities for Qwen vision models
-- **📊 Comet ML**: Experiment tracking and metrics visualization
-- **🔧 Accelerate**: Distributed training and mixed precision
-- **🐍 Python 3.8+**: Core development environment
-
-## 🔬 Future Improvements
-
-### Next Steps
-- **Multi-language Output**: Generate SQL DDL, Python SQLAlchemy models, TypeScript interfaces
-- **Interactive Correction**: Web interface for validating and correcting extracted schemas
-- **Diagram Standardization**: Handle different diagramming tools and formats
-- **Constraint Detection**: Better recognition of unique constraints, indices, and checks
-- **Real-time Processing**: Optimize inference speed for production usage
-
-### Research Directions  
-- **Few-shot Learning**: Adapt to new diagram styles with minimal examples
-- **Incremental Learning**: Update model with user corrections
-- **Multi-modal Fusion**: Combine diagram images with accompanying text descriptions
-
-## 🤝 Contributing & Feedback
-
-This is a research project exploring practical applications of vision-language models. If you find it useful or have suggestions:
-
-- � **Issues**: Report bugs or request features via GitHub Issues
-- � **Ideas**: Share your use cases and improvement suggestions  
-- 🔧 **Code**: Pull requests welcome for bug fixes and enhancements
-- � **Data**: Contributions of schema diagrams for training data expansion
-
-## 📄 License
-
-MIT License - Feel free to use this work for research or commercial projects.
-
-## � Acknowledgments
-
-- **Alibaba Qwen Team** for the excellent Qwen2.5-VL base model
-- **Hugging Face** for the transformers ecosystem and model hosting
-- **Comet ML** for experiment tracking and visualization tools
-- **Open Source Community** for the foundational libraries that made this possible
-
----
-
-**⭐ Star this repo if you found the approach interesting or useful!**
-
-*For questions or collaboration opportunities, feel free to reach out via GitHub issues.*
