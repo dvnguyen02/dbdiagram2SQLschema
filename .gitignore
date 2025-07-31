@@ -1,2 +1,8 @@
 *.zip
 .png
+/images/
+*.log
+*.tmp
+/mermaid/
+*.png
+*.mmd

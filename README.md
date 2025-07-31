@@ -1,23 +1,35 @@
-# DB Diagram to JSON Schema with Fine-tuned Qwen 2.5-VL
+# DB Diagram to JSON Schema with Fine-Each diagram
+## Why This Project?
+
+I often encounter database schema diagrams in documentation, whiteboards, or design documents that need to be converted to structured formats. Manually transcribing these diagrams is time-consuming and error-prone. 
+
+While experimenting with **Qwen2.5-VL** across various vision-language tasks, I discovered that the base model struggled significantly with structured diagram interpretation. When I fed it ER diagrams and database schemas, the results were inconsistent and often incomplete - missing tables, incorrectly identifying relationships, or producing malformed JSON outputs.
+
+This poor performance on diagram-to-schema conversion tasks motivated me to explore **fine-tuning approaches**. Rather than accepting the limitations of the base model, I decided to create a specialized dataset and fine-tune Qwen2.5-VL specifically for database diagram understanding.
+
+This project demonstrates how **domain-specific fine-tuning** can dramatically improve model performance on specialized tasks, potentially saving hours of manual work in database documentation and migration projects.
+
+### Model Architecture Overview
+
+The Qwen2.5-VL architecture combines vision and language understanding through a sophisticated multi-modal design:
+
+![Qwen2.5-VL Architecture](https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2.5-VL/qwen2.5vl_arc.jpeg)
+
+**Key Components:**
+- **Vision Encoder**: Processes input images and converts them to visual tokens
+- **Vision-Language Adapter**: Bridges visual and textual representations
+- **Language Model Backbone**: Qwen2.5 transformer for text generation and reasoning
+- **Multi-modal Fusion**: Seamlessly integrates visual and textual information for coherent outputs
+
+## Results & Performanceed Qwen 2.5-VL
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
 [![Transformers](https://img.shields.io/badge/🤗%20Transformers-4.49.0+-yellow.svg)](https://huggingface.co/transformers/)
 [![Hugging Face](https://img.shields.io/badge/🤗%20Model-Qwen2.5--VL--Diagrams2SQL-yellow.svg)](https://huggingface.co/zodiac2525/Qwen2.5-VL-Diagrams2SQL)
 
-## Why This Project?
-
-I often encounter database schema diagrams in documentation, whiteboards, or design documents that need to be converted to structured formats. Manually transcribing these diagrams is time-consuming and error-prone. 
-
-This project explores **fine-tuning a vision-language model** to automatically extract structured JSON schema from ER diagram images, potentially saving hours of manual work in database documentation and migration projects.
 
 ## Technical Approach
-
-### Base Model Choice
-I chose **Qwen2.5-VL-3B-Instruct** because:
-- Manageable size for fine-tuning on consumer hardware
-- Strong performance on structured output tasks
-- Active community and good documentation
 
 ### Fine-tuning Strategy
 - **Method**: LoRA (Low-Rank Adaptation) for parameter-efficient fine-tuning
@@ -34,7 +46,7 @@ I created a diverse dataset of 400+ schema diagrams covering:
 
 Each diagram is paired with detailed JSON annotations including table structures, column definitions, and relationship mappings.
 
-## � Results & Performance
+## Results & Performance
 
 The fine-tuned model shows significant improvements over the base model:
 
@@ -46,8 +58,7 @@ The fine-tuned model shows significant improvements over the base model:
 | **JSON Format Compliance** | 78.1% | 96.2% | **+18.1%** |
 
 
-
-## 📓 Notebook Walkthrough
+## Notebook 
 
 The core of this project is in the `finetuning.ipynb` notebook.
 
