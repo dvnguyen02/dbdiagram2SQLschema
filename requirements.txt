@@ -34,9 +34,3 @@ fastapi>=0.100.0
 uvicorn>=0.22.0
 python-multipart>=0.0.6
 
-# Testing (for requirements-dev.txt)
-# pytest>=7.4.0
-# pytest-cov>=4.1.0
-# black>=23.7.0
-# flake8>=6.0.0
-# mypy>=1.5.0
