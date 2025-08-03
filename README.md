@@ -11,30 +11,46 @@ and Here's the output:
 
 ```json
 {
-  "students": {
-    "id": "INTEGER",
-    "fn": "VARCHAR(255)",
-    "email": "VARCHAR(255)",
-    "date_of_birth": "DATE",
-    "address": "TEXT",
-    "department_id": "INTEGER"
-  },
-  "courses": {
-    "id": "INTEGER",
-    "fn": "VARCHAR(255)",
-    "email": "VARCHAR(255)",
-    "date_of_birth": "DATE",
-    "address": "TEXT",
-    "department_id": "INTEGER"
-  },
-  "teachers": {
-    "id": "INTEGER",
-    "fn": "VARCHAR(255)",
-    "email": "VARCHAR(255)",
-    "date_of_birth": "DATE",
-    "address": "TEXT",
-    "department_id": "INTEGER"
-  }
+ "databse_skema": {
+   "tabel1": {
+     "nam": "step",
+     "colums": [
+       {"nam": "id", "typ": "int", "constrains": "PK"},
+       {"nam": "code", "typ": "varchar(10)"},
+       {"nam": "name", "typ": "nvarchar(100)"}
+     ]
+   },
+   "tabel2": {
+     "nam": "proces_step", 
+     "colums": [
+       {"nam": "id", "typ": "int", "constrains": "PK"},
+       {"nam": "step_id", "typ": "int", "constrains": "FK"},
+       {"nam": "status", "typ": "varchar", "constrains": "N"}
+     ]
+   },
+   "tabel3": {
+     "nam": "job",
+     "colums": [
+       {"nam": "id", "typ": "int", "constrains": "PK"},
+       {"nam": "code", "typ": "nvarchar(10)"},
+       {"nam": "description", "typ": "nvarchar(max)"},
+       {"nam": "date_published", "typ": "datetime"},
+       {"nam": "no_of_vacancys", "typ": "int"},
+       {"nam": "job_catagory_id", "typ": "int", "constrains": "FK"}
+     ]
+   },
+   "tabel4": {
+     "nam": "job_catagory",
+     "colums": [
+       {"nam": "id", "typ": "int", "constrains": "PK"},
+       {"nam": "name", "typ": "nvarchar(100)"}
+     ]
+   }
+ },
+ "relationshps": [
+   {"fom": "proces_step.step_id", "too": "step.id"},
+   {"fom": "job.job_catagory_id", "too": "job_catagory.id"}
+ ]
 }
 ```
 
