@@ -1,9 +1,9 @@
-# DB Diagram to JSON Schema with Fine-Each diagram
+# DB Diagram to JSON
 ## Why This Project?
 
 While experimenting with **Qwen2.5-VL** across various vision-language tasks, I discovered that the base model struggled significantly with structured diagram interpretation. When I fed it ER diagrams and database schemas, the results were inconsistent and often incomplete - missing tables, incorrectly identifying relationships, or producing malformed JSON outputs.
 
-This is one of the example that I tried: 
+This is one of the examples that I tried: 
 
 ![Example](inference/case1.png)
 
@@ -277,7 +277,6 @@ Try the model yourself with this notebook:
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1P2NvExoJN1HQLNz2xIQ3FPLPfcXDfMMF?usp=sharing)
 
-Upload your own database diagrams and see the fine-tuned model convert them to structured JSON schemas in real-time.
 ## 🤗 Model on Hugging Face
 
 The fine-tuned model is also available on Hugging Face Hub:
