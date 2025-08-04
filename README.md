@@ -54,41 +54,44 @@ and Here's the output:
 }
 ```
 
-They are terriable ayy? As a result, this leads me to explore **fine-tuning approaches**. I decided to collect and create a specialized dataset and fine-tune specifically for database diagram understanding.
+Look at those typos! "databse_scema"? "colums"? "relationshps"? It was like watching someone try to transcribe a conversation in a language they barely understood. The model was trying its best, but it was clear it hadn't been trained for this specific task.
 
-Let's look at the overview of the qwen model first. 
+## Why This Matters
+
+Database diagrams are everywhere in software development. They're the blueprints of our data architectures, and often the first thing new developers see when joining a project. Having an AI that can accurately interpret these diagrams could revolutionize documentation, code generation, and database migration tasks.
+
+But here's the thing: while large vision-language models like Qwen2.5-VL are incredible at general tasks, they struggle with domain-specific structured data. 
 
 ## Model Architecture Overview
 
-The Qwen2.5-VL architecture combines vision and language understanding through a sophisticated multi-modal design:
+Before diving into the solution, let's peek under the hood of what we're working with:
 
 ![Qwen2.5-VL Architecture](https://qianwen-res.oss-cn-beijing.aliyuncs.com/Qwen2.5-VL/qwen2.5vl_arc.jpeg)
 
-**Key Components:**
-- **Vision Encoder**: Processes input images and converts them to visual tokens
-- **Vision-Language Adapter**: Bridges visual and textual representations
-- **Language Model Backbone**: Qwen2.5 transformer for text generation and reasoning
-- **Multi-modal Fusion**: Seamlessly integrates visual and textual information for coherent outputs
+The architecture is quite complex:
+- A **Vision Encoder** that "sees" the diagram
+- A **Vision-Language Adapter** that translates visual patterns into something the language model understands
+- The **Qwen2.5 transformer backbone** that generates the structured output
+- All working together through **multi-modal fusion**
 
 
 ## Onto the finetuning part
 
 ### The strategy
-- **Method**: LoRA (Low-Rank Adaptation) for parameter-efficient fine-tuning
-- **Target Modules**: q_proj, v_proj, k_proj, o_proj (attention layers)
-- **LoRA Configuration**: rank=16, alpha=32 for optimal performance vs. efficiency
+I could have gone for full model fine-tuning, but that would be like using a sledgehammer to crack a nut. Instead, I opted for **LoRA (Low-Rank Adaptation)** – a clever technique that adds small, trainable modules to the existing model. It's efficient, effective, and doesn't require a supercomputer.
 
-Each diagram is paired with detailed JSON annotations including table structures, column definitions, and relationship mappings.
+My configuration:
+- **Target Modules**: The attention layers (q_proj, v_proj, k_proj, o_proj)
+- **LoRA rank**: 16 (a sweet spot between performance and efficiency)
+- **LoRA alpha**: 32 (for stable training)
 
-## Notebook 
+### The Training Process
 
-You could find the training process from `finetuning.ipynb` notebook.
+I monitored everything meticulously using Comet ML. Watching the loss curve drop was like watching a student finally "get it":
 
-### Comet ML Tracking
-The training process was thoroughly monitored using Comet ML. You might need to sign up to get the api:
+![Training Loss Progression](public/train_loss%20VS%20step.svg)
 
-#### Training Loss Progression
-![Training Loss vs Steps](public/train_loss%20VS%20step.svg)
+You can find the complete training process in my `finetuning.ipynb` notebook if you want to replicate the results.
 
 ## The Results
 
@@ -98,7 +101,7 @@ The fine-tuned model shows significant improvements over the base model:
 |--------|------------------|------------------
 | **Table Detection Accuracy** | 0.0% | 89.2% 
 | **Relationship Accuracy** | 0% | 90% 
-
+*   The base model couldn't even produce valid JSON for this task. My fine-tuned version? Nearly 90% accurate across the board.
 *   The fine-tuned model achieved significantly higher accuracy in identifying the number of tables (approximately 89.2%) and relationships (90.0%) compared to the base model.
 *   The base model was unable to produce valid output for this task, resulting in 0.0% accuracy for both table and relationship counts on the benchmark subset.
 
@@ -208,6 +211,7 @@ Our input:
   ]
 }
 ```
+The base model produced a verbose, confused output with self-referential foreign keys and inconsistent constraint definitions. It was trying to be helpful but clearly didn't understand the visual language of database diagrams.
 
 ### Fine-tuned Model Output
 ```json
@@ -276,6 +280,7 @@ Our input:
   ]
 }
 ```
+Clean. Accurate. Production-ready!
 
 ### Differences
 
@@ -291,11 +296,10 @@ However, it suffers from several issues.
 ## Inference 
 Try the model yourself with this notebook:
 
+### Quick Start with Colab
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1P2NvExoJN1HQLNz2xIQ3FPLPfcXDfMMF?usp=sharing)
 
-## 🤗 Model on Hugging Face
-
-The fine-tuned model is also available on Hugging Face Hub:
-
+### Get the Model
+The fine-tuned model is available on Hugging Face:
 **[zodiac2525/Qwen2.5-VL-Diagrams2SQL](https://huggingface.co/zodiac2525/Qwen2.5-VL-Diagrams2SQL-v2)**
 
