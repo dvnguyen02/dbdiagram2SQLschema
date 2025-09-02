@@ -3,60 +3,7 @@
 
 While experimenting with **Qwen2.5-VL** across various vision-language tasks, I discovered that the base model struggled significantly with structured diagram interpretation. When I fed it ER diagrams and database schemas, the results were inconsistent and often incomplete - missing tables, incorrectly identifying relationships, or producing malformed JSON outputs.
 
-This is one of the examples that I tried: 
-
-![Example](inference/case1.png)
-
-and Here's the output: 
-
-```json
-{
- "databse_skema": {
-   "tabel1": {
-     "nam": "step",
-     "colums": [
-       {"nam": "id", "typ": "int", "constrains": "PK"},
-       {"nam": "code", "typ": "varchar(10)"},
-       {"nam": "name", "typ": "nvarchar(100)"}
-     ]
-   },
-   "tabel2": {
-     "nam": "proces_step", 
-     "colums": [
-       {"nam": "id", "typ": "int", "constrains": "PK"},
-       {"nam": "step_id", "typ": "int", "constrains": "FK"},
-       {"nam": "status", "typ": "varchar", "constrains": "N"}
-     ]
-   },
-   "tabel3": {
-     "nam": "job",
-     "colums": [
-       {"nam": "id", "typ": "int", "constrains": "PK"},
-       {"nam": "code", "typ": "nvarchar(10)"},
-       {"nam": "description", "typ": "nvarchar(max)"},
-       {"nam": "date_published", "typ": "datetime"},
-       {"nam": "no_of_vacancys", "typ": "int"},
-       {"nam": "job_catagory_id", "typ": "int", "constrains": "FK"}
-     ]
-   },
-   "tabel4": {
-     "nam": "job_catagory",
-     "colums": [
-       {"nam": "id", "typ": "int", "constrains": "PK"},
-       {"nam": "name", "typ": "nvarchar(100)"}
-     ]
-   }
- },
- "relationshps": [
-   {"fom": "proces_step.step_id", "too": "step.id"},
-   {"fom": "job.job_catagory_id", "too": "job_catagory.id"}
- ]
-}
-```
-
-They are terriable ayy? As a result, this leads me to explore **fine-tuning approaches**. I decided to collect and create a specialized dataset and fine-tune specifically for database diagram understanding.
-
-Let's look at the overview of the qwen model first. 
+Let's look at the overview of the qwen model. 
 
 ## Model Architecture Overview
 
@@ -83,7 +30,7 @@ My configuration:
 
 ### The Training Process
 
-I monitored everything meticulously using Comet ML. Watching the loss curve drop was like watching a student finally "get it":
+I monitored everything using Comet ML. 
 
 ![Training Loss Progression](public/train_loss%20VS%20step.svg)
 
