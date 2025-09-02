@@ -44,9 +44,9 @@ The fine-tuned model shows significant improvements over the base model:
 |--------|------------------|------------------
 | **Table Detection Accuracy** | 0.0% | 89.2% 
 | **Relationship Accuracy** | 0% | 90% 
-*   The base model couldn't even produce valid JSON for this task. My fine-tuned version? Nearly 90% accurate across the board.
-*   The fine-tuned model achieved significantly higher accuracy in identifying the number of tables (approximately 89.2%) and relationships (90.0%) compared to the base model.
-*   The base model was unable to produce valid output for this task, resulting in 0.0% accuracy for both table and relationship counts on the benchmark subset.
+* Nearly 90% accurate across the board.
+* The fine-tuned model achieved significantly higher accuracy in identifying the number of tables (approximately 89.2%) and relationships (90.0%) compared to the base model.
+* The base model was unable to produce valid output for this task, resulting in 0.0% accuracy for both table and relationship counts on the benchmark subset.
 
 ## Comparision between Base Model vs Fine-tuned Model
 
@@ -223,7 +223,7 @@ The base model produced a verbose, confused output with self-referential foreign
   ]
 }
 ```
-Clean. Accurate. Production-ready!
+Clean. Accurate!
 
 ### Differences
 
